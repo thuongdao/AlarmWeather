@@ -62,6 +62,7 @@ class TodayViewController: AWBaseViewController {
         client.units = .CA
         client.language = .English
         client.getForecast(latitude: 35.652832, longitude: 139.839478, excludeForecastFields: [.Alerts, .Flags, .Minutely]) { [weak self](forecast, error) in
+            //checking if success
             if error == nil{
                 if let _hourlyData = forecast?.hourly?.data {
                     self?.hourlyData = _hourlyData
