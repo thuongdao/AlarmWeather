@@ -30,4 +30,15 @@ class ItemHourTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func configWithDataPoint(dataPoint: DataPoint){
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "HH"
+        lblHour.text = dateFormatter.stringFromDate(dataPoint.time)
+        if let percent = dataPoint.precipProbability {
+            lblPercentPrecipitation.text =  String(Int(round(percent * 100))) + PERCENT
+        }
+        if let temperature = dataPoint.temperature{
+            lblTemperature.text = String(round(temperature)) + "˚C"
+        }
+    }
 }

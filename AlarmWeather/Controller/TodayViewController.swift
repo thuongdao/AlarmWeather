@@ -31,9 +31,9 @@ class TodayViewController: AWBaseViewController {
     var hourCollectionVC: WeatherByHoursCollectionVC!
     var daily = [DataPoint]()
     
-    override func loadView() {
-        super.loadView()
-    }
+//    override func loadView() {
+//        super.loadView()
+//    }
     
     func setGradientCoverView(){
         let gradientLayer = CAGradientLayer()
@@ -46,6 +46,7 @@ class TodayViewController: AWBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         contentTableView.registerNib(UINib(nibName: "ItemHourTableViewCell", bundle: NSBundle.mainBundle()),
                                      forCellReuseIdentifier: ItemHourIdentify)
         contentTableView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.1)
@@ -70,6 +71,10 @@ class TodayViewController: AWBaseViewController {
                 if let _daily = forecast?.daily?.data{
                     self?.daily = _daily
                 }
+                if let _current = forecast?.currently{
+                    self?.current = _current
+                }
+                
                 if let location = forecast?.timezone{
                     self!.lblLocation.text = location
                 }
@@ -79,6 +84,10 @@ class TodayViewController: AWBaseViewController {
     }
     
     func displayData(){
+        if let _temperature = current?.temperature {
+            lblCurrentTemperature.text = String(round(_temperature)) + "˚C"
+        }
+        lblWeatherOverview.text = current?.summary
         headerView.displayData(daily[0])
         headerView.setNeedsDisplay()
         self.view.setNeedsDisplay()
@@ -98,6 +107,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(ItemHourIdentify) as! ItemHourTableViewCell
+        cell.configWithDataPoint(hourlyData[indexPath.row])
         cell.selectionStyle = .None
         cell.backgroundColor = UIColor.clearColor()
         return cell
