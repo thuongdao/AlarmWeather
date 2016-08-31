@@ -10,6 +10,13 @@ import UIKit
 
 class SettingViewController: AWBaseViewController {
 
+    // Even: rain , snow, high temperature, low temperature, ab-normal wether
+    // 1. time to push everyday
+    // 2. hours to push before the even
+    // 3. probability occur the even
+    
+    // riêng với nhiệt độ cao và thấp thì cho phép chọn giá trị, và bỏ đi khả năng sảy ra 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

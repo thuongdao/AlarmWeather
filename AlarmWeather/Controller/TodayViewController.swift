@@ -56,6 +56,14 @@ class TodayViewController: AWBaseViewController {
         setGradientCoverView()
 
         requestData()
+        
+        let localNotification = UILocalNotification()
+        localNotification.fireDate = NSDate(timeIntervalSinceNow: 5)
+        localNotification.alertBody = "new Blog Posted at iOScreator.com"
+        localNotification.timeZone = NSTimeZone.defaultTimeZone()
+        localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
+        
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
     }
     
     func requestData(){
@@ -84,14 +92,15 @@ class TodayViewController: AWBaseViewController {
     }
     
     func displayData(){
-        if let _temperature = current?.temperature {
-            lblCurrentTemperature.text = String(round(_temperature)) + "˚C"
-        }
-        lblWeatherOverview.text = current?.summary
-        headerView.displayData(daily[0])
-        headerView.setNeedsDisplay()
-        self.view.setNeedsDisplay()
-        contentTableView.reloadData()
+        dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
+            self!.contentTableView.reloadData()
+            if let _temperature = self!.current?.temperature {
+                self!.lblCurrentTemperature.text = String(round(_temperature)) + "˚C"
+            }
+            self!.lblWeatherOverview.text = self!.current?.summary
+            self!.headerView.displayData(self!.daily[0])
+        })
+
     }
 }
 
